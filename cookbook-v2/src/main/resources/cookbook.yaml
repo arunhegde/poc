@@ -1,0 +1,79 @@
+---
+app-control-catalog: 
+  name: Cookbook
+  displayname: Cookbook
+  description: "Cookbook Application"
+  connection-info: 
+    oauth2-client-id: 7cfcc9084de9223b512f
+    oauth2-client-secret: 2d163ea5afbdd009538cc12995d9328f86600d89
+    oauth2-url: "https://github.com/login/oauth"
+    return-url-page: "#!/setup/applications"
+    webauth-url: "https://api.github.com"
+  
+  resources: 
+    - 
+      name: File
+      description: "File"
+      actions: 
+        - 
+          name: Upload
+          description: "Upload file"
+        - 
+          name: Download
+          description: "Download file"
+    - 
+      name: User
+      description: "User"
+      actions: 
+        - 
+          name: create
+          description: Organization created
+        - 
+          name: share
+          description: Member invited to join organization
+        - 
+          name: delete
+          description: Invitation to organization cancelled
+        - 
+          name: edit
+          description: Member added to organization
+        - 
+          name: login
+          description: user logged in
+        - 
+          name: failed_login
+          description: Blocked user from an organization
+          
+  policies: 
+    -
+      name: PasswordPolicy
+      description: "Password policy"
+      recipient: 
+        type: "User"
+        value: "xyz123"
+      permissions: 
+        -
+          content-type: type1
+          content-pattern: "abc"
+          action-pattern: 
+            - "123456"
+            - "xyz"
+  
+  setting-groups: 
+    -
+      name: PasswordControls
+      id: "password-policies"
+      settings: 
+        -
+          name: pwdminlength
+          displayname: "Minimum required characters"
+          cardinality: "single-valued"
+          type: number
+          unit: characters
+          values: 
+            - 
+              weight: 0
+              val: 6
+  securitycontrol: 0
+  version: "1.0"
+   

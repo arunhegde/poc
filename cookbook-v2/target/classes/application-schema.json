@@ -1,0 +1,280 @@
+{
+ "$schema": "http://json-schema.org/draft-04/schema#",
+ "definitions": {
+ 
+  "recipientTypes": { "enum": [ "User", "Group" ] },
+  "recipientEffectTypes": { "enum": [ "allow", "deny" ] },
+  "cardinalityTypes" :  { "enum": [ "single-valued", "multi-valued" ]},
+  "unitTypes" :  { "enum": [ "days", "hours", "minutes", "seconds", "characters" ]},
+  "matchingRuleTypes" :  { "enum": [ "case-sensitive", "case-insensitive" ]},
+ 
+  "permissions": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "content-type": {
+      "type": "string"
+     },
+     "content-pattern": {
+      "type": "string"
+     },
+     "action-pattern": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  }
+ },
+ "type": "object",
+ "properties": {
+  "app-control-catalog": {
+   "type": "object",
+   "properties": {
+    "name": {
+     "type": "string"
+    },
+    "displayname": {
+     "type": "string"
+    },
+    "description": {
+     "type": "string"
+    },
+    "connection-info": {
+     "type": "object",
+     "properties": {
+      "oauth2-client-id": {
+       "type": "string"
+      },
+      "oauth2-client-secret": {
+       "type": "string"
+      },
+      "oauth2-url": {
+       "type": "string"
+      },
+      "return-url-page": {
+       "type": "string"
+      },
+      "webauth-url": {
+       "type": "string"
+      }
+     }
+    },
+    "resources": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "name": {
+        "type": "string"
+       },
+       "id": {
+        "type": "string"
+       },
+       "displayname": {
+        "type": "string"
+       },
+       "description": {
+        "type": "string"
+       },
+       "isTaggable": {
+        "type": "boolean"
+       },
+       "ishierarchical": {
+        "type": "boolean"
+       },
+       "delimiter": {
+        "type": "string"
+       },
+       "match-rule-type": {
+        "$ref": "#/definitions/matchingRuleTypes"
+       },
+       "actions": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "name": {
+           "type": "string"
+          },
+          "description": {
+           "type": "string"
+          }
+         }
+        }
+       }
+      }
+     }
+    },
+    "roles": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "name": {
+        "type": "string"
+       },
+       "displayname": {
+        "type": "string"
+       },
+       "description": {
+        "type": "string"
+       },
+       "permissions": {
+        "$ref": "#/definitions/permissions"
+       }
+      }
+     }
+    },
+    "setting-groups": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "name": {
+        "type": "string"
+       },
+       "id": {
+        "type": "string"
+       },
+       "settings": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "name": {
+           "type": "string"
+          },
+          "displayname": {
+           "type": "string"
+          },
+          "cardinality": {
+             "$ref": "#/definitions/cardinalityTypes"
+          },
+          "type": {
+           "type": "string"
+          },
+          "unit": {
+            "$ref": "#/definitions/unitTypes"
+          },
+          "values": {
+           "type": "array",
+           "items": {
+            "type": "object",
+            "properties": {
+             "displayname": {
+              "type": "string"
+             },
+             "weight": {
+              "type": "integer"
+             },
+             "val": {
+              "type": "string"
+             }
+            }
+           }
+          },
+          "setting-filters": {
+           "type": "array",
+           "items": {
+            "type": "object",
+            "properties": {
+             "name": {
+              "type": "string"
+             },
+             "displayname": {
+              "type": "string"
+             },
+             "type": {
+              "type": "string"
+             },
+             "filter-values": {
+              "type": "array",
+              "items": {
+               "type": "object",
+               "properties": {
+                "displayname": {
+                 "type": "string"
+                },
+                "weight": {
+                 "type": "integer"
+                },
+                "val": {
+                 "type": "string"
+                }
+               }
+              }
+             },
+             "setting-validations": {
+              "type": "array",
+              "items": {
+               "type": "object",
+               "properties": {
+                "min": {
+                 "type": "integer"
+                },
+                "max": {
+                 "type": "integer"
+                },
+                "errormessage": {
+                 "type": "string"
+                },
+                "placeholder": {
+                 "type": "string"
+                }
+               }
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    },
+    "policies": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "name": {
+        "type": "string"
+       },
+       "description": {
+        "type": "string"
+       },
+       "recipient": {
+        "type": "object",
+        "properties": {
+         "type": {
+          "$ref": "#/definitions/recipientTypes"
+         },
+         "value": {
+          "type": "string"
+         },
+         "effect": {
+          "$ref": "#/definitions/recipientEffectTypes"
+         }
+        }
+       },
+       "permissions": {
+        "$ref": "#/definitions/permissions"
+       }
+      }
+     }
+    },
+    "securitycontrol": {
+     "type": "integer"
+    },
+    "version": {
+     "type": "string"
+    }
+   }
+  }
+ }
+}

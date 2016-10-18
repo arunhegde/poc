@@ -1,0 +1,343 @@
+--- 
+app-control-catalog: 
+  name: GitHub
+  displayname: GitHub
+  description: "GitHub Application"
+  connection-info: 
+    oauth2-client-id: 7cfcc9084de9223b512f
+    oauth2-client-secret: 2d163ea5afbdd009538cc12995d9328f86600d89
+    oauth2-url: "https://github.com/login/oauth"
+    return-url-page: "#!/setup/applications"
+    webauth-url: "https://api.github.com"
+  resources: 
+    - 
+      name: Account
+      id: "resource-1"
+      displayname: Account
+      description: "Account detail"
+      isTaggable: true
+      ishierarchical: false
+      delimiter: "/"
+      match-rule-type: "case-insensitive"
+      actions: 
+        - 
+          name: billing.change_email
+          description: "Billing information change"
+        - 
+          name: payment_method.update
+          description: "Payment method update"
+    - 
+      name: Organization
+      id: "resource-2"
+      displayname: Organization
+      description: "Organization detail"
+      isTaggable: true
+      ishierarchical: false
+      delimiter: "/"
+      match-rule-type: "case-insensitive"
+      actions: 
+        - 
+          name: org.create
+          description: Organization created
+        - 
+          name: org.invite_member
+          description: Member invited to join organization
+        - 
+          name: org.cancel_invitation
+          description: Invitation to organization cancelled
+        - 
+          name: org.add_member
+          description: Member added to organization
+        - 
+          name: org.update_member
+          description: Member updated in an organization
+        - 
+          name: org.block_user
+          description: Blocked user from an organization
+        - 
+          name: org.unblock_user
+          description: Unblocked user from an organization
+        - 
+          name: org.remove_member
+          description: Member removed from organization
+    - 
+      name: Repository
+      id: "resource-3"
+      displayname: Repository
+      description: "Repository detail"
+      isTaggable: true
+      ishierarchical: false
+      delimiter: "/"
+      match-rule-type: "case-sensitive"
+      actions: 
+        - 
+          name: repo.create_branch
+          description: Branch created in a repository
+        - 
+          name: repo.destroy_branch
+          description: Branch destroyed from a repository
+        - 
+          name: repo.issue_create
+          description: Issue created in a repository
+        - 
+          name: repo.issue_close
+          description: Issue closed in a repository
+        - 
+          name: repo.remove_member
+          description: Member removed from repository
+        - 
+          name: repo.pull_request
+          description: Pull from a repository
+        - 
+          name: repo.pull_review_comment
+          description: Pull review comment added
+        - 
+          name: repo.push
+          description: Push to repository
+        - 
+          name: repo.access
+          description: Repository access type changed
+        - 
+          name: repo.create
+          description: Repository created
+        - 
+          name: repo.destroy
+          description: Repository destroyed
+        - 
+          name: repo.fork
+          description: Repository forked
+        - 
+          name: repo.rename
+          description: Repository renamed
+        - 
+          name: repo.create_tag
+          description: Tag created under repository
+        - 
+          name: repo.destroy_tag
+          description: Tag destroyed from a repository
+        - 
+          name: repo.add_team
+          description: Team added to repository
+        - 
+          name: repo.remove_team
+          description: Team removed from repository
+        - 
+          name: repo.gollum_update
+          description: Wiki page updated
+    - 
+      name: Team
+      id: "resource-4"
+      displayname: Team
+      description: "Team detail"
+      isTaggable: true
+      ishierarchical: false
+      delimiter: "/"
+      match-rule-type: "case-sensitive"
+      actions: 
+        - 
+          name: team.create
+          description: Team created
+        - 
+          name: team.destroy
+          description: Team destroyed
+        - 
+          name: team.add_member
+          description: Member added to a team
+        - 
+          name: team.remove_member
+          description: Member removed from a team
+          
+  roles: 
+    - 
+      name: Member
+      displayname: Member
+      description: "Member role"
+      permissions: 
+        -
+          content-type: type1
+          content-pattern: "abc"
+          actions-pattern: "123456"
+          action-pattern: 
+            - "123456"
+            - "xyz"
+        -
+          content-type: type2
+          content-pattern: "abc"
+          actions-pattern: "123456"
+          action-pattern: 
+            - "123456"
+            - "xyz"
+    - 
+      name: Administrator
+      displayname: Administrator
+      description: "Administrator role"
+      permissions: 
+        -
+          content-type: type1
+          content-pattern: "abc"
+          action-pattern: "123456"
+          action-pattern: 
+            - "123456"
+            - "xyz"
+        -
+          content-type: type2
+          content-pattern: "abc"
+          action-pattern: 
+            - "123456"
+            - "xyz"
+      
+  setting-groups: 
+    -
+      name: PasswordControls
+      id: "password-policies"
+      settings: 
+        -
+          name: pwdminlength
+          displayname: "Minimum required characters"
+          cardinality: "single-valued"
+          type: number
+          unit: characters
+          values: 
+            - 
+              weight: 0
+              val: 6
+            - 
+              weight: 1
+              val: 7
+            - 
+              weight: 2
+              val: 8
+          setting-filters: 
+            -
+              name: SecurityGroupCheckerFilter
+              displayname: "Do not alert for"
+              type: text  
+              filter-values: 
+                - 
+                  displayname: "xyz"
+                  weight: 1
+                  val: "abc"
+              setting-validations: 
+                -
+                  min: 1
+                  max: 5
+                  errormessage: ""
+                  placeholder: ""
+        -
+          name: pwdResetFreq
+          displayname: "Password resets: Require users to reset passwords every:"
+          cardinality: "single-valued"
+          unit: days
+          type: number
+          values: 
+            - 
+              displayname: "Do not require"
+              weight: 0
+              val: null
+            - 
+              displayname: "30 days"
+              weight: 1
+              val: "30"
+            - 
+              displayname: "60 days"
+              weight: 2
+              val: "60"
+            -
+              displayname: "90 days"
+              weight: 3
+              val: "90"
+          setting-filters: 
+            -
+              name: SecurityGroupCheckerFilter
+              displayname: "Do not alert for"
+              type: text  
+              filter-values: 
+                - 
+                  displayname: "xyz"
+                  weight: 1
+                  val: "abc"
+              setting-validations: 
+                -
+                  min: 1
+                  max: 5
+                  errormessage: ""
+                  placeholder: ""
+    -
+      name: SessionPolicies
+      id: "session-policies"
+      settings: 
+        -
+          name: loginSessionDuration
+          displayname: "Duration a user can remain logged in without activity before being logged out"
+          cardinality: "single-valued"
+          type: "number"
+          unit: hours
+          values: 
+            - 
+              displayname: "Default (48 hours)"
+              weight: 2
+              val: "0"
+            - 
+              displayname: "10 minutes"
+              weight: 10
+              val: "1"
+            - 
+              displayname: "1 hour"
+              weight: 5
+              val: "2"
+            -
+              displayname: "14 days"
+              weight: 8
+              val: "3"
+          setting-filters: 
+            -
+              name: SecurityGroupCheckerFilter
+              displayname: "Do not alert for"
+              type: text  
+              filter-values: 
+                - 
+                  displayname: "xyz"
+                  weight: 1
+                  val: "abc"
+              setting-validations: 
+                -
+                  min: 1
+                  max: 5
+                  errormessage: ""
+                  placeholder: ""
+         
+  policies: 
+    -
+      name: PasswordPolicy
+      description: "Password policy"
+      recipient: 
+        type: "user"
+        value: "xyz123"
+      effect: "allow"
+      permissions: 
+        -
+          content-type: type1
+          content-pattern: "abc"
+          action-pattern: "123456"
+          action-pattern: 
+            - "123456"
+            - "xyz"
+        
+    -
+      name: BranchingPolicy
+      description: "Branching Policy"
+      recipient: 
+        type: "group"
+        value: "12234"
+        effect: "allow"
+      permissions: 
+        -
+          content-type: type1
+          content-pattern: "abc"
+          action-pattern: "123456"
+          action-pattern: 
+            - "123456"
+            - "xyz"
+           
+  securitycontrol: 0
+  version: "1.0"
